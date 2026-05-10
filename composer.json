@@ -1,0 +1,13 @@
+{
+    "name": "shippercli/contracts",
+    "description": "Contracts and interfaces for Shipper CLI providers",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "ShipperCli\\Contracts\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
