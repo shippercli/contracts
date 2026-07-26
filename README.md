@@ -19,12 +19,28 @@ Contracts and interfaces for Shipper CLI providers.
 - `SslManagerInterface` - SSL certificate management
 - `ShipperPluginInterface` - Plugin entry point
 
+Provider contracts accept Shipper configuration objects as `object` so provider
+packages do not depend on the CLI's internal DTO namespace. Providers should use
+the documented configuration accessors (`name()`, `path()`, `repository()`,
+`profiles()`, `get()`, and related feature accessors) and feature-detect optional
+accessors with `method_exists()`.
+
 ## Creating a Provider
 
 1. Create a new repository: `shippercli/provider-{name}`
 2. Add `composer.json` with `"type": "shipper-plugin"`
-3. Implement the interfaces
-4. Add `extra.shipper-plugin` pointing to your plugin class
+3. Implement `DeploymentProviderInterface`
+4. Implement `ShipperPluginInterface` and return a provider-name-to-class map
+5. Add `extra.shipper-plugin` pointing to your plugin class
+
+```php
+public function providers(): array
+{
+    return [
+        'example' => ExampleProvider::class,
+    ];
+}
+```
 
 ## License
 

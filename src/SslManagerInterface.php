@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ShipperCliContracts;
-
-use ShipperCliContractsTypesSslConfig;
+namespace ShipperCli\Contracts;
 
 interface SslManagerInterface
 {
@@ -13,12 +11,12 @@ interface SslManagerInterface
      *
      * @return array<string>
      */
-    public function plan(string $domain, SslConfig $ssl): array;
+    public function plan(string $domain, object $ssl): array;
 
     /**
      * Apply SSL certificate configuration.
      *
      * @return array<string, mixed>
      */
-    public function apply(int $serverId, int $siteId, string $domain, SslConfig $ssl): array;
+    public function apply(int $serverId, int $siteId, string $domain, object $ssl): array;
 }

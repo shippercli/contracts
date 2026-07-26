@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ShipperCliContracts;
+namespace ShipperCli\Contracts;
 
 interface EnvironmentManagerInterface
 {

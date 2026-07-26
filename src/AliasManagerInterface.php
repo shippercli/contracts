@@ -2,10 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ShipperCliContracts;
-
-use ShipperCliContractsTypesProfileConfig;
-use ShipperCliContractsTypesProjectConfig;
+namespace ShipperCli\Contracts;
 
 interface AliasManagerInterface
 {
@@ -14,7 +11,7 @@ interface AliasManagerInterface
      *
      * @return array<string>
      */
-    public function plan(ProjectConfig $project, ProfileConfig $profile): array;
+    public function plan(object $project, object $profile): array;
 
     /**
      * Apply alias configuration.

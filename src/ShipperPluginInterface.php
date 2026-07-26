@@ -7,9 +7,9 @@ namespace ShipperCli\Contracts;
 interface ShipperPluginInterface
 {
     /**
-     * Get the plugin's service providers.
+     * Map provider names to their implementation classes.
      *
-     * @return array<class-string, class-string>
+     * @return array<string, class-string<DeploymentProviderInterface>>
      */
     public function providers(): array;
 }

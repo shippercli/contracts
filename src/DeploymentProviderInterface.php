@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace ShipperCli\Contracts;
 
-use ShipperCliContractsTypesProfileConfig;
-use ShipperCliContractsTypesProjectConfig;
-
 interface DeploymentProviderInterface
 {
     /**
@@ -14,24 +11,24 @@ interface DeploymentProviderInterface
      *
      * @return array<string> Array of validation errors, empty if valid
      */
-    public function validate(ProjectConfig $project, ProfileConfig $profile): array;
+    public function validate(object $project, object $profile): array;
 
     /**
      * Plan the deployment (dry-run).
      *
      * @return array<string, mixed> Plan details
      */
-    public function plan(ProjectConfig $project, ProfileConfig $profile): array;
+    public function plan(object $project, object $profile): array;
 
     /**
      * Execute the deployment.
      */
-    public function apply(ProjectConfig $project, ProfileConfig $profile): bool;
+    public function apply(object $project, object $profile): bool;
 
     /**
      * Destroy the deployment.
      */
-    public function destroy(ProjectConfig $project, ProfileConfig $profile): bool;
+    public function destroy(object $project, object $profile): bool;
 
     /**
      * Get provider name.
