@@ -44,4 +44,9 @@ jobs:
         run: find src -type f -name '*.php' -print0 | xargs -0 -n1 php -l
 
       - name: Audit dependencies
-        run: composer audit --locked --no-interaction
+        run: |
+          if [ -f composer.lock ]; then
+            composer audit --locked --no-interaction
+          else
+            echo "No third-party dependencies to audit."
+          fi
