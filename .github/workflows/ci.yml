@@ -45,7 +45,7 @@ jobs:
 
       - name: Audit dependencies
         run: |
-          if [ -f composer.lock ]; then
+          if php -r '$lock = json_decode(file_get_contents("composer.lock"), true); exit(count($lock["packages"] ?? []) + count($lock["packages-dev"] ?? []) > 0 ? 0 : 1);'; then
             composer audit --locked --no-interaction
           else
             echo "No third-party dependencies to audit."
