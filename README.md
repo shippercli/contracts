@@ -17,6 +17,8 @@ Contracts and interfaces for Shipper CLI providers.
 - `DeployScriptManagerInterface` - Deployment script management
 - `EnvironmentManagerInterface` - Environment variable management
 - `SslManagerInterface` - SSL certificate management
+- `ProviderCapabilitiesInterface` - Explicit supported, partial, and unsupported capabilities
+- `ServerLifecycleProviderInterface` - Safe provider server resolution, creation, inspection, and deletion
 - `ShipperPluginInterface` - Plugin entry point
 
 Provider contracts accept Shipper configuration objects as `object` so provider
@@ -24,6 +26,10 @@ packages do not depend on the CLI's internal DTO namespace. Providers should use
 the documented configuration accessors (`name()`, `path()`, `repository()`,
 `profiles()`, `get()`, and related feature accessors) and feature-detect optional
 accessors with `method_exists()`.
+
+Providers that expose optional features should implement the matching contract
+interfaces rather than adding provider-specific methods to the core deployment
+interface. Server deletion must require proof that Shipper created the server.
 
 ## Creating a Provider
 
