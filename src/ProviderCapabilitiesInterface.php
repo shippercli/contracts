@@ -9,10 +9,10 @@ interface ProviderCapabilitiesInterface
     /**
      * Return the provider capability manifest.
      *
-     * Each capability must contain a `state` key with one of
-     * `supported`, `partial`, or `unsupported`.
+     * The returned array must validate with CapabilityManifest::from().
+     * Partial capabilities require non-empty notes or limitations.
      *
-     * @return array<string, array{state: string, notes?: string, requirements?: array<int, string>, limitations?: array<int, string>}>
+     * @return array<string, array{state: 'supported'|'partial'|'unsupported', notes?: string, requirements?: list<string>, limitations?: list<string>}>
      */
     public function capabilities(): array;
 }
