@@ -11,6 +11,17 @@
             "ShipperCli\\Contracts\\": "src/"
         }
     },
+    "require-dev": {
+        "pestphp/pest": "^3.8"
+    },
+    "scripts": {
+        "test": "php vendor/bin/pest"
+    },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
 }
