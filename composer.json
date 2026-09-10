@@ -15,11 +15,14 @@
         "pestphp/pest": "^3.8"
     },
     "scripts": {
-        "test": "php vendor/bin/pest"
+        "test": "vendor/bin/pest"
     },
     "minimum-stability": "stable",
     "prefer-stable": true,
     "config": {
+        "platform": {
+            "php": "8.3.0"
+        },
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
