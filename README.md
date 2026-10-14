@@ -31,6 +31,44 @@ Providers that expose optional features should implement the matching contract
 interfaces rather than adding provider-specific methods to the core deployment
 interface. Server deletion must require proof that Shipper created the server.
 
+## Resource ownership
+
+Resolving a resource by domain or name does not prove ownership. Before changing
+an existing resource during `apply`, a provider must verify its persisted Shipper
+ownership evidence and the intended project/profile scope. A name collision with
+an unmanaged resource must fail before changing its environment, repository,
+workloads, scheduled tasks, or deployment state. Providers must not silently add
+an ownership marker to an unmanaged resource to bypass this check.
+
+`plan` must identify unmanaged collisions as blocked actions. `destroy` and
+preview cleanup require the same ownership evidence and must preserve unmanaged
+resources. Missing owned resources may be treated as already removed. Automatic
+adoption is not part of the deployment contract; any future adoption operation
+must be explicit and separately reviewed.
+
+## Database credentials
+
+Creating a database is successful only when its intended application can obtain
+the connection details. Providers must deliver the host, database, username, and
+password through the application's environment or a supported secret reference
+before deployment. Generated credentials must not appear in logs, plans, error
+messages, or debug output.
+
+Credentials belong to each database. A shared `database_password` may be used
+only when explicitly configured; otherwise generated passwords must be unique
+to each newly created database. Multiple databases require an explicit mapping
+to distinct environment variables or secret references. A provider that can
+configure only the primary database must describe that limitation and reject
+additional declarations it cannot connect to the application.
+
+Re-applying an existing database must preserve its password and the application's
+working connection configuration. Providers must not generate a replacement
+password without updating the database and application together. If the provider
+cannot retrieve existing credentials, it must reuse the application's existing
+secret or require explicit configured credentials. A missing connection or an
+unprovable site association must produce an actionable failure rather than a
+successful deployment with an unusable database.
+
 ## Creating a Provider
 
 1. Create a new repository: `shippercli/provider-{name}`
