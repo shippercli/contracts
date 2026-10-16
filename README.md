@@ -43,8 +43,23 @@ an ownership marker to an unmanaged resource to bypass this check.
 `plan` must identify unmanaged collisions as blocked actions. `destroy` and
 preview cleanup require the same ownership evidence and must preserve unmanaged
 resources. Missing owned resources may be treated as already removed. Automatic
-adoption is not part of the deployment contract; any future adoption operation
-must be explicit and separately reviewed.
+adoption is not part of the deployment contract. A provider that implements
+adoption must require explicit operator authorization tied to the exact
+resource identity and project/profile scope. The plan must identify each
+resource that will be adopted and the changes that will be made to it; `--force`
+alone is not adoption authorization. Apply must recheck the identity and scope
+before changing the resource, then persist an auditable `adopted` state for that
+resource. Adoption must not silently convert it to a Shipper-created resource.
+
+Lifecycle state is per resource, including child resources associated with an
+adopted parent. Destroy and preview cleanup must preserve adopted resources.
+They may remove a child resource only when Shipper separately recorded that it
+created that exact child in the current scope and the normal ownership checks
+pass. Deleting an adopted resource requires a separate explicit ownership
+transfer or deletion operation, recorded against that exact resource before
+destruction; parent adoption does not authorize recursive deletion. Providers
+that cannot persist and verify this lifecycle state must refuse adoption and
+preserve the resource.
 
 ### Readable ownership evidence
 
