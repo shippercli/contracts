@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   test:
-    name: PHP ${{ matrix.php }}
+    name: CI / PHP ${{ matrix.php }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -42,6 +42,9 @@ jobs:
 
       - name: Lint PHP
         run: find src -type f -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Verify Composer distribution
+        run: python3 tests/package/verify_dist.py
 
       - name: Run tests
         run: composer test
