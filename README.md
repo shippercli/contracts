@@ -46,6 +46,26 @@ resources. Missing owned resources may be treated as already removed. Automatic
 adoption is not part of the deployment contract; any future adoption operation
 must be explicit and separately reviewed.
 
+### Readable ownership evidence
+
+Ownership requires a successful, structurally valid response for the exact
+resource being considered. Explicit API failure/error fields invalidate the
+response even when it also contains a matching marker. Missing content is not
+an empty file and cannot establish absence, ownership or permission to replace
+existing configuration.
+
+Environment-backed ownership checks must parse the complete document using the
+application's effective assignment rules. Duplicate assignments, quoted values
+and multiline values must be handled consistently. A marker parsed before an
+unfinished trailing value does not establish ownership; parsing a valid prefix
+is insufficient. Raw matching lines inside quoted text do not establish it either.
+
+Required refusal regressions include matching markers with an incomplete trailing
+value, an explicit API error with matching content, duplicate conflicting marker
+assignments, and a marker embedded in a multiline value. Tests must verify no
+mutation/deletion request is sent, alongside valid multiline and explicitly empty
+content controls. Empty content can be readable without proving ownership.
+
 ## Blocked deployment plans
 
 `DeploymentProviderInterface::plan()` is read-only. It may inspect remote state,
@@ -100,6 +120,30 @@ cannot retrieve existing credentials, it must reuse the application's existing
 secret or require explicit configured credentials. A missing connection or an
 unprovable site association must produce an actionable failure rather than a
 successful deployment with an unusable database.
+
+### Persistence and partial operations
+
+A successful write response alone does not prove credential delivery. Verify
+persisted selected values through the provider's supported read path before
+reporting success or starting dependent operations. Refuse unreadable, incomplete
+or mismatching readback without logging secrets. Document persistence timing and
+retry behavior; stale readback must not be treated as proof that creation failed.
+
+For multiple databases, deliver each confirmed connection before creating the
+next database. A later failure must preserve earlier stored connections, and a
+fresh process must be able to reuse confirmed resources without rotating passwords.
+Configuration steps must run sequentially and stop at the first failed prerequisite.
+
+Creation and delivery can still fail between operations. Providers must document
+ambiguous creation, failed storage and partial cleanup outcomes, including a
+recovery procedure that inspects actual resources before retrying. Incremental
+writes do not provide an atomic transaction, durable credential journal or
+concurrency control. Those guarantees require separate implementation and evidence.
+
+Required regressions include an acknowledged but ignored write, unreadable
+readback, a second creation failing after the first connection is stored, a fresh
+retry creating only missing resources, and failure preventing later dependent
+mutations. Validate literal secret values and unrelated configuration preservation.
 
 ## Creating a Provider
 
