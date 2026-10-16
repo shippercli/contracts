@@ -26,5 +26,19 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
+    },
+    "archive": {
+        "exclude": [
+            "vendor",
+            "node_modules",
+            "tests",
+            ".github",
+            ".env*",
+            "auth.json",
+            ".phpunit*",
+            ".phpstan*",
+            "builds",
+            "box.phar"
+        ]
     }
 }
