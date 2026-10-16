@@ -46,6 +46,38 @@ resources. Missing owned resources may be treated as already removed. Automatic
 adoption is not part of the deployment contract; any future adoption operation
 must be explicit and separately reviewed.
 
+## Blocked deployment plans
+
+`DeploymentProviderInterface::plan()` is read-only. It may inspect remote state,
+so provider docs must describe required API access. A known blocking prerequisite
+must return boolean `blocked: true` with human-readable `actions` explaining what
+needs review. A blocked plan must not include executable deployment actions or
+secrets. If required ownership evidence cannot be read, the plan must be blocked
+or fail explicitly; it must not assume that the resource is absent or owned.
+
+```php
+return [
+    'provider' => 'example',
+    'project' => $project->name(),
+    'profile' => $profile->name(),
+    'blocked' => true,
+    'actions' => ['BLOCKED: Existing site lacks matching project/profile ownership.'],
+];
+```
+
+Consumers must stop before deployment when `blocked` is true. The flag must be a
+boolean; a present non-boolean value is invalid and must fail closed. Omitting
+the field preserves legacy plan compatibility, and explicit `false` means the
+provider found no blocker in the checks it performed. Neither value grants
+permission to bypass validation or ownership checks during apply. `--force` skips
+interactive confirmation only; it does not override a blocked plan.
+
+Apply must recheck mutable prerequisites even after an unblocked plan. Providers
+must document checks deferred to apply; an unblocked plan alone does not prove
+deployment readiness or live connectivity. These semantics require a CLI version
+that enforces them; the proposed implementation is
+[CLI PR #154](https://github.com/shippercli/cli/pull/154).
+
 ## Database credentials
 
 Creating a database is successful only when its intended application can obtain
