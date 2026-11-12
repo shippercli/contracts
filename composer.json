@@ -36,6 +36,7 @@
             ".env*",
             "auth.json",
             ".phpunit*",
+            "phpunit.xml*",
             ".phpstan*",
             "builds",
             "box.phar"
