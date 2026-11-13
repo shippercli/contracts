@@ -16,6 +16,12 @@ interface DeploymentProviderInterface
     /**
      * Plan the deployment (dry-run).
      *
+     * Return `blocked: true` and public, actionable `actions` when a known
+     * prerequisite prevents deployment. Planning must not mutate resources.
+     * Ownership that cannot be verified must not be reported as permission
+     * to create, adopt, update, or delete an existing resource. Apply must
+     * independently recheck these prerequisites because plans can be stale.
+     *
      * @return array<string, mixed> Plan details
      */
     public function plan(object $project, object $profile): array;
