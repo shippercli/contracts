@@ -51,3 +51,5 @@ public function providers(): array
 ## License
 
 MIT
+
+[![advertisement](https://ads.servead.net/i/9e9f881b-74f7-4015-a756-f29399c8c9b3.svg)](https://ads.servead.net/c/9e9f881b-74f7-4015-a756-f29399c8c9b3)
